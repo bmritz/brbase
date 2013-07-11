@@ -13,13 +13,13 @@ function wrkon(){
   then
     repos_str=`ls -cdr $HOME/.wrkon/*`
     repos=(${repos_str// /})
-    printf '\t%-8s %-50s %-25s\n' "job" "repo" "alias"
+    printf '%-8s %-30s %-20s\n' "job" "repo" "alias"
     i=1
     for d in ${repos[*]}
     do
       tmp=(${d//:/ })
       tmp1=(${tmp[0]//\// })
-      printf '\t%-8s %-50s %-25s\n' "[$i]" "${tmp1[${#tmp1[@]}-1]}" "${tmp[1]}"
+      printf '%-8s %-30s %-25s\n' "[$i]" "${tmp1[${#tmp1[@]}-1]}" "${tmp[1]}"
       i=$(($i+1))
     done
   elif [ "$1" == "exit" ]
@@ -67,10 +67,8 @@ function wrkon(){
   else
     if [[ $1 != *[!0-9]* ]]
     then
-      echo $1
       repos_str=`ls -cdr $HOME/.wrkon/*`
       repos=(${repos_str// /})
-      echo ${#repose[@]}
       if [ $(($1)) -ge ${#repos[@]} ]
       then
         echo "$1 is too large of a job number"
