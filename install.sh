@@ -7,6 +7,7 @@ rm $HOME/.bashrc
 echo "source \$HOME/Base/config/bash/bashrc" >> $HOME/.bashrc
 echo "source \$HOME/Base/config/bash/bash_aliases" >> $HOME/.bashrc
 echo "source \$HOME/Base/config/bash/bash_commands" >> $HOME/.bashrc
+#echo "alias wrkon='python \${HOME}/Base/wrkon/wrkon.py'" >> $HOME/.bashrc
 echo "export PS1=[$1]\$PS1" >> $HOME/.bashrc
 echo "source \$HOME/Base/config/vim/vimrc" >> $HOME/.vimrc
 rm -Rf $HOME/.wrkon

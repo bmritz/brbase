@@ -1,11 +1,57 @@
 #!/bin/bash
 
 function wrkon(){
-  if [ "$1" == "list" ]
+  if [ ! $1 ]
   then
-    ls -a $HOME/.wrkon
+    echo -e 'wrkon options:'
+    echo -e '   list'
+    echo -e '   exit'
+    echo -e '   new <repo> [alias]'
+    echo -e '   <repo> [alias]'
+  elif [ "$1" == "list" ]
+  then
+    ls -a $HOME/.wrkon | awk '{ignores["."]="."; ignores[".."]=".."; if ($1 in ignores==0) { print $1 }}'
   elif [ "$1" == "exit" ]
   then
     echo "Saying I'm exiting, but not really doing anything"
+  elif [ "$1" == "new" ]
+  then
+    if [ "$2" == "" ]
+    then
+      echo "please provide wrkon-new with a repo"
+      echo "correct command is 'wrkon <repo> [alias]'"
+    else
+      if [ "$3" == "" ]
+      then
+        echo "no alias"
+        max=1
+        #get the existing numeric aliases.... do the next one
+        repos_str=`ls -d $HOME/.wrkon/$2:*`
+        repos=( $(IFS=":" echo "$repos_str" ))
+        for d in ${repos[*]}
+        do
+          tmp=(${d//:/ })
+          if [[ ${tmp[1]} != *[!0-9]* ]]
+          then
+            if [ ${tmp[1]} > $max ]
+            then
+              max=${tmp[1]}
+            fi
+          fi
+        done
+        max=$(($max + 1))
+        echo $max
+        mkdir $HOME/.wrkon/$2:$max
+        cd $HOME/.wrkon/$2:$max
+      else
+        if [ -d "$HOME/.wrkon/$2:$3" ]
+        then
+          echo "$2:$3 exists, please select a different alias"
+        else
+          mkdir $HOME/.wrkon/$2:$3
+          cd $HOME/.wrkon/$2:$3
+        fi
+      fi
+    fi
   fi
 }
