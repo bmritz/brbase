@@ -1,0 +1,16 @@
+#!/bin/bash
+alias cl='clear; ls'
+alias TODO='todo.py rft'
+
+alias ll='ls -la'
+alias ls='ls -G --color=auto'
+alias cd..='cd ..'
+alias vi='vim'
+alias svi='sudo vi'
+alias vis='vim "+set si"'
+alias grep='grep --color=auto'
+alias mkdir='mkdir -p'
+alias todo='more ~/Dropbox/notes/TODO.txt'
+alias vt='vim ~/Dropbox/notes/TODO.txt'
+alias food='more ~/Dropbox/notes/food.txt'
+alias vf='vim ~/Dropbox/notes/food.txt'
