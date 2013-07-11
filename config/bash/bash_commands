@@ -11,7 +11,8 @@ function wrkon(){
     echo -e '   <job>'
   elif [ "$1" == "list" ]
   then
-    repos_str=`ls -cdr $HOME/.wrkon/*`
+    #repos_str=`ls -cdr $USR_HOME/.wrkon/*`
+    repos_str=`find .wrkon/ -type d | sort | tail -n +2`
     repos=(${repos_str// /})
     printf '%-8s %-30s %-20s\n' "job" "repo" "alias"
     i=1
@@ -19,12 +20,18 @@ function wrkon(){
     do
       tmp=(${d//:/ })
       tmp1=(${tmp[0]//\// })
-      printf '%-8s %-30s %-25s\n' "[$i]" "${tmp1[${#tmp1[@]}-1]}" "${tmp[1]}"
-      i=$(($i+1))
+      if [ -d "${d}" ]
+      then
+        printf '%-8s %-30s %-25s\n' "[$i]" "${tmp1[${#tmp1[@]}-1]}" "${tmp[1]}"
+        i=$(($i+1))
+      fi
     done
   elif [ "$1" == "exit" ]
   then
-    echo "Saying I'm exiting, but not really doing anything"
+    #do the other stuff, too!
+    export PS1=[$MACH_NAME]$POST_PS1
+    export HOME=$USR_HOME
+    cd $HOME
   elif [ "$1" == "new" ]
   then
     if [ "$2" == "" ]
@@ -37,7 +44,7 @@ function wrkon(){
         echo "no alias"
         max=1
         #get the existing numeric aliases.... do the next one
-        repos_str=`ls -d $HOME/.wrkon/$2:*`
+        repos_str=`ls -d $USR_HOME/.wrkon/$2:*`
         repos=(${repos_str// /})
         for d in ${repos[*]}
         do
@@ -52,37 +59,49 @@ function wrkon(){
         done
         max=$(($max + 1))
         echo $max
-        mkdir $HOME/.wrkon/$2:$max
-        cd $HOME/.wrkon/$2:$max
+        mkdir $USR_HOME/.wrkon/$2:$max
+        export PS1=[$MACH_NAME][$2:$max]$POST_PS1
+        cd $USR_HOME/.wrkon/$2:$max
+        export HOME=$USR_HOME/.wrkon/$2:$max
       else
-        if [ -d "$HOME/.wrkon/$2:$3" ]
+        if [ -d "$USR_HOME/.wrkon/$2:$3" ]
         then
           echo "$2:$3 exists, please select a different alias"
         else
-          mkdir $HOME/.wrkon/$2:$3
-          cd $HOME/.wrkon/$2:$3
+          mkdir $USR_HOME/.wrkon/$2:$3
+          export PS1=[$MACH_NAME][$2:$3]$POST_PS1
+          cd $USR_HOME/.wrkon/$2:$3
+          export HOME=$USR_HOME/.wrkon/$2:$3
+          source $USR_HOME/.wrkon/env.source
         fi
       fi
     fi
   else
     if [[ $1 != *[!0-9]* ]]
     then
-      repos_str=`ls -cdr $HOME/.wrkon/*`
+      repos_str=`find .wrkon/ -type d | sort | tail -n +2`
       repos=(${repos_str// /})
-      if [ $(($1)) -ge ${#repos[@]} ]
+      if [ $(($1-1)) -ge ${#repos[@]} ] || [ $1 -lt 1 ]
       then
-        echo "$1 is too large of a job number"
+        echo "$1 is an illegal job number"
       else
+        export HOME=${repos[$(($1-1))]}
+        tmp1=(${repos[$(($1-1))]//\// })
+        export PS1=[$MACH_NAME][${tmp1[${#tmp1[@]}-1]}]$POST_PS1
         cd ${repos[$(($1-1))]}
+        source $USR_HOME/.wrkon/env.source
       fi
     elif [ "$2" == "" ]
     then
       echo "Please provide an alias"
       echo "wrkon <repo> <alias>"
     else
-      if [ -d "$HOME/.wrkon/$1:$2" ]
+      if [ -d "$USR_HOME/.wrkon/$1:$2" ]
       then
-        cd $HOME/.wrkon/$1:$2
+        export PS1=[$MACH_NAME][$1:$2]$POST_PS1
+        cd $USR_HOME/.wrkon/$1:$2
+        export HOME=$USR_HOME/.wrkon/$1:$2
+        source $USR_HOME/.wrkon/env.source
       else
         echo "repo:alias '$1:$2' not found"
       fi
