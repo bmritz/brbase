@@ -7,10 +7,18 @@ function wrkon(){
     echo -e '   list'
     echo -e '   exit'
     echo -e '   new <repo> [alias]'
-    echo -e '   <repo> [alias]'
+    echo -e '   <repo> <alias>'
+    echo -e '   <job>'
   elif [ "$1" == "list" ]
   then
-    ls -a $HOME/.wrkon | awk '{ignores["."]="."; ignores[".."]=".."; if ($1 in ignores==0) { print $1 }}'
+    repos_str=`ls -d $HOME/.wrkon/*`
+    repos=(${repos_str// /})
+    printf '\t%-50s %-25s\n' "repo" "alias"
+    for d in ${repos[*]}
+    do
+      tmp=(${d//:/ })
+      printf '\t%-50s %-25s\n' "${tmp[0]}" "${tmp[1]}"
+    done
   elif [ "$1" == "exit" ]
   then
     echo "Saying I'm exiting, but not really doing anything"
@@ -27,7 +35,7 @@ function wrkon(){
         max=1
         #get the existing numeric aliases.... do the next one
         repos_str=`ls -d $HOME/.wrkon/$2:*`
-        repos=( $(IFS=":" echo "$repos_str" ))
+        repos=(${repos_str// /})
         for d in ${repos[*]}
         do
           tmp=(${d//:/ })
@@ -51,6 +59,22 @@ function wrkon(){
           mkdir $HOME/.wrkon/$2:$3
           cd $HOME/.wrkon/$2:$3
         fi
+      fi
+    fi
+  else
+    if [[ $1 != *[!0-9]* ]]
+    then
+      echo  "Do something with job numbers"
+    elif [ "$2" == "" ]
+    then
+      echo "Please provide an alias"
+      echo "wrkon <repo> <alias>"
+    else
+      if [ -d "$HOME/.wrkon/$1:$2" ]
+      then
+        cd $HOME/.wrkon/$1:$2
+      else
+        echo "repo:alias '$1:$2' not found"
       fi
     fi
   fi
