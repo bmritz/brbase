@@ -1,0 +1,11 @@
+#!/bin/bash
+
+function wrkon(){
+  if [ "$1" == "list" ]
+  then
+    ls -a $HOME/.wrkon
+  elif [ "$1" == "exit" ]
+  then
+    echo "Saying I'm exiting, but not really doing anything"
+  fi
+}
