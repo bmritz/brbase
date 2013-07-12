@@ -11,10 +11,9 @@ function wrkon(){
     echo -e '   <job>'
   elif [ "$1" == "list" ]
   then
-    #repos_str=`ls -cdr $USR_HOME/.wrkon/*`
-    repos_str=`find .wrkon/ -type d | sort | tail -n +2`
+    repos_str=`find $USR_HOME/.wrkon/ -maxdepth 1 -type d | sort | tail -n +2`
     repos=(${repos_str// /})
-    printf '%-8s %-30s %-20s\n' "job" "repo" "alias"
+    printf '%-8s %-30s %-20s %-11s\n' "job" "repo" "alias" "active GUAC"
     i=1
     for d in ${repos[*]}
     do
@@ -22,7 +21,12 @@ function wrkon(){
       tmp1=(${tmp[0]//\// })
       if [ -d "${d}" ]
       then
-        printf '%-8s %-30s %-25s\n' "[$i]" "${tmp1[${#tmp1[@]}-1]}" "${tmp[1]}"
+        active=""
+        if [ "$CURR_GUAC" == "${tmp[1]}" ]
+        then
+          active="*"
+        fi
+        printf '%-8s %-30s %-20s %-11s\n' "[$i]" "${tmp1[${#tmp1[@]}-1]}" "${tmp[1]}" "$active"
         i=$(($i+1))
       fi
     done
@@ -42,7 +46,7 @@ function wrkon(){
       if [ "$3" == "" ]
       then
         echo "no alias"
-        max=1
+        max=0
         #get the existing numeric aliases.... do the next one
         repos_str=`ls -d $USR_HOME/.wrkon/$2:*`
         repos=(${repos_str// /})
@@ -58,8 +62,7 @@ function wrkon(){
           fi
         done
         max=$(($max + 1))
-        echo $max
-        mkdir $USR_HOME/.wrkon/$2:$max
+        git clone git@github.com:aunalytics/$2.git $USR_HOME/.wrkon/$2:$max
         export PS1=[$MACH_NAME][$2:$max]$POST_PS1
         cd $USR_HOME/.wrkon/$2:$max
         export HOME=$USR_HOME/.wrkon/$2:$max
@@ -68,18 +71,22 @@ function wrkon(){
         then
           echo "$2:$3 exists, please select a different alias"
         else
-          mkdir $USR_HOME/.wrkon/$2:$3
+          git clone git@github.com:aunalytics/$2.git $USR_HOME/.wrkon/$2:$3
           export PS1=[$MACH_NAME][$2:$3]$POST_PS1
           cd $USR_HOME/.wrkon/$2:$3
           export HOME=$USR_HOME/.wrkon/$2:$3
-          source $USR_HOME/.wrkon/env.source
         fi
+      fi
+      if [ "$2" == "GUAC" ]
+      then
+        source $USR_HOME/.wrkon/env.source
+        export CURR_GUAC=$3
       fi
     fi
   else
     if [[ $1 != *[!0-9]* ]]
     then
-      repos_str=`find .wrkon/ -type d | sort | tail -n +2`
+      repos_str=`find $USR_HOME/.wrkon/ -maxdepth 1 -type d | sort | tail -n +2`
       repos=(${repos_str// /})
       if [ $(($1-1)) -ge ${#repos[@]} ] || [ $1 -lt 1 ]
       then
@@ -87,9 +94,14 @@ function wrkon(){
       else
         export HOME=${repos[$(($1-1))]}
         tmp1=(${repos[$(($1-1))]//\// })
+        tmp2=(${tmp1[${#tmp1[@]}-1]//:/ })
         export PS1=[$MACH_NAME][${tmp1[${#tmp1[@]}-1]}]$POST_PS1
         cd ${repos[$(($1-1))]}
-        source $USR_HOME/.wrkon/env.source
+        if [ "${tmp2[0]}" == "GUAC" ]
+        then
+          source $USR_HOME/.wrkon/env.source
+          export CURR_GUAC=${tmp2[1]}
+        fi
       fi
     elif [ "$2" == "" ]
     then
@@ -101,7 +113,11 @@ function wrkon(){
         export PS1=[$MACH_NAME][$1:$2]$POST_PS1
         cd $USR_HOME/.wrkon/$1:$2
         export HOME=$USR_HOME/.wrkon/$1:$2
-        source $USR_HOME/.wrkon/env.source
+        if [ "$1" == "GUAC" ]
+        then
+          source $USR_HOME/.wrkon/env.source
+          export CURR_GUAC=$2
+        fi
       else
         echo "repo:alias '$1:$2' not found"
       fi
