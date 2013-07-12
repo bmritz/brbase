@@ -35,6 +35,7 @@ function wrkon(){
     #do the other stuff, too!
     export PS1=[$MACH_NAME]$POST_PS1
     export HOME=$USR_HOME
+    export CURR_GUAC=''
     cd $HOME
   elif [ "$1" == "new" ]
   then
