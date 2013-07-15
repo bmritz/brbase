@@ -22,7 +22,7 @@ function wrkon(){
       if [ -d "${d}" ]
       then
         active=""
-        if [ "$CURR_GUAC" == "${tmp[1]}" ]
+        if [ "$CURR_GUAC" == "${tmp[1]}" ] && [ "${tmp1[${#tmp1[@]}-1]}" == "GUAC" ]
         then
           active="*"
         fi
