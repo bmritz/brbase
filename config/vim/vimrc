@@ -1,3 +1,4 @@
+let $HOME=$USR_HOME
 " Highlight after 80 columns
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
@@ -79,8 +80,8 @@ let g:syntastic_enable_signs=1
 let g:syntastic_quiet_warnings=1
 
 " Directories for swp files
-set backupdir=~/.vim/backup
-set directory=~/.vim/backup
+set backupdir=$USR_HOME/.vim/backup
+set directory=$USR_HOME/.vim/backup
 
 " Show (partial) command in the status line
 set showcmd

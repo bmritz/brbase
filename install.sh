@@ -12,7 +12,7 @@ echo "source \$USR_HOME/Base/config/bash/bash_commands" >> $HOME/.bashrc
 echo "export POST_PS1=\$PS1" >> $HOME/.bashrc
 echo "export MACH_NAME=$1" >> $HOME/.bashrc
 echo "export PS1=[$1]\$PS1" >> $HOME/.bashrc
-echo "source \$HOME/Base/config/vim/vimrc" >> $HOME/.vimrc
+echo "source \$USR_HOME/Base/config/vim/vimrc" >> $HOME/.vimrc
 rm -Rf $HOME/.wrkon
 mkdir $HOME/.wrkon
 cp $HOME/Base/env.source $HOME/.wrkon
