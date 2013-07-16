@@ -22,7 +22,7 @@ function wrkon(){
       if [ -d "${d}" ]
       then
         active=""
-        if [ "$CURR_GUAC" == "${tmp[1]}" ]
+        if [ "$CURR_GUAC" == "${tmp[1]}" ] && [ "${tmp1[${#tmp1[@]}-1]}" == "GUAC" ]
         then
           active="*"
         fi
@@ -49,7 +49,7 @@ function wrkon(){
         echo "no alias"
         max=0
         #get the existing numeric aliases.... do the next one
-        repos_str=`ls -d $USR_HOME/.wrkon/$2@*`
+        repos_str=`ls -d $USR_HOME/.wrkon/$2@* 2>/dev/null`
         repos=(${repos_str// /})
         for d in ${repos[*]}
         do
