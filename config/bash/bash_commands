@@ -49,7 +49,7 @@ function wrkon(){
         echo "no alias"
         max=0
         #get the existing numeric aliases.... do the next one
-        repos_str=`ls -d $USR_HOME/.wrkon/$2@*`
+        repos_str=`ls -d $USR_HOME/.wrkon/$2@* 2>/dev/null`
         repos=(${repos_str// /})
         for d in ${repos[*]}
         do

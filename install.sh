@@ -13,8 +13,11 @@ echo "export POST_PS1=\$PS1" >> $HOME/.bashrc
 echo "export MACH_NAME=$1" >> $HOME/.bashrc
 echo "export PS1=[$1]\$PS1" >> $HOME/.bashrc
 echo "source \$USR_HOME/Base/config/vim/vimrc" >> $HOME/.vimrc
-rm -Rf $HOME/.wrkon
-mkdir $HOME/.wrkon
+#rm -Rf $HOME/.wrkon
+if [ ! -d "$HOME/.wrkon" ]
+then
+  mkdir $HOME/.wrkon
+fi
 cp $HOME/Base/env.source $HOME/.wrkon
 rm -Rf $HOME/.vim
 cp -r $HOME/Base/config/vim/vimfiles $HOME/.vim
