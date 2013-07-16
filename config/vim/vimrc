@@ -103,3 +103,6 @@ set vb
 " Highlight color
 hi Search cterm=NONE ctermfg=grey ctermbg=blue
 hi Search guibg=peru guifg=wheat
+
+" Defaults
+ map <Leader>ip :r$USR_HOME/Base/config/vim/vim.py <CR>
