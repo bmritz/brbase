@@ -10,3 +10,4 @@ alias vim="vim -u $USR_HOME/.vimrc"
 alias vis='vim "+set si"'
 alias grep='grep --color=auto'
 alias mkdir='mkdir -p'
+alias hg='history | grep'
