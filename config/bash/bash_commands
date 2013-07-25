@@ -75,7 +75,10 @@ function wrkon(){
           fi
           export PS1=[$MACH_NAME][$2@$max]$POST_PS1
       else
-        if [ -d "$USR_HOME/.wrkon/$2@$3" ]
+        if [[ "$3" == *.* ]]
+        then
+          echo "'.' is not allowed in alias names"
+        elif [ -d "$USR_HOME/.wrkon/$2@$3" ]
         then
           echo "$2:$3 exists, please select a different alias"
         else
