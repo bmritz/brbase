@@ -14,7 +14,6 @@ set nocompatible
 set number
 set ruler
 syntax on
-set term=xtermc
 
 " Mouse click
 set mouse=a
