@@ -12,6 +12,7 @@ echo "source \$USR_HOME/Base/config/bash/bash_commands" >> $HOME/.bashrc
 echo "export POST_PS1=\$PS1" >> $HOME/.bashrc
 echo "export MACH_NAME=$1" >> $HOME/.bashrc
 echo "export PS1=[$1]\$PS1" >> $HOME/.bashrc
+echo "export LD_LIBRARY_PATH=/opt/local/lib"
 echo "source \$USR_HOME/Base/config/vim/vimrc" >> $HOME/.vimrc
 #rm -Rf $HOME/.wrkon
 if [ ! -d "$HOME/.wrkon" ]

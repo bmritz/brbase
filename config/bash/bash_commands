@@ -55,12 +55,14 @@ function wrkon(){
         repos=(${repos_str// /})
         for d in ${repos[*]}
         do
-          tmp=(${d//@/ })
-          if [[ ${tmp[1]} != *[!0-9]* ]]
+          tmp=(${d//./ })
+          a=(${d//./ })
+          c=${a[${#a[@]}-1]}
+          if [[ "$c" != *[!0-9]* ]]
           then
-            if [ ${tmp[1]} > $max ]
+            if (( $c > $max ))
             then
-              max=${tmp[1]}
+              max=$c
             fi
           fi
         done
@@ -78,7 +80,7 @@ function wrkon(){
         if [[ "$3" == *.* ]]
         then
           echo "'.' is not allowed in alias names"
-        elif [ -d "$USR_HOME/.wrkon/$2@$3" ]
+        elif [ -d "$USR_HOME/.wrkon/$2.$3" ]
         then
           echo "$2:$3 exists, please select a different alias"
         else
