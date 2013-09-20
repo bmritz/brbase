@@ -105,4 +105,4 @@ hi Search cterm=NONE ctermfg=grey ctermbg=blue
 hi Search guibg=peru guifg=wheat
 
 " Defaults
- map <Leader>ip :r$USR_HOME/Base/config/vim/vim.py <CR>
+ map <Leader>ip :r$BASE_DIR/config/vim/vim.py <CR>

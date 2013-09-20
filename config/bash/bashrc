@@ -1,4 +1,4 @@
-source $USR_HOME/Base/config/bash/bash_autocomplete
+source $BASE_DIR/config/bash/bash_autocomplete
 PS1="\[\e[0;32m\][\w]:$ \[\e[0;37m\]"
 GIT_MERGE_AUTOEDIT=yes
 GIT_MERGE_AUTOCOMMIT=yes
