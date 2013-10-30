@@ -29,10 +29,11 @@ def main():
   else: print 'Searching directory %s' % (directory)
 
   matches=[]
+  tcount = 1
   for root, dirnames, filenames in os.walk(directory):
     for filename in [n for n in filenames if match(n)]:
       f = os.path.join(root,filename);
-      findTodos(f,user);
+      tcount = findTodos(f,user, tcount);
 
 def match(name):
   types = ['py', 'js']
@@ -41,13 +42,15 @@ def match(name):
       return True
   return False
 
-def findTodos(f,user):
+def findTodos(f,user, tcount):
   count = 1
   for line in open(f):
     if re_match(line, user):
-      s = f+':'+str(count)+':'+line
-      print s,
+#s = f+':'+str(count)+':'+line
+      print '%d: %s:%s: %s' % (tcount, f, str(count), line),
+      tcount+=1
     count+=1
+  return tcount
 
 def re_match(line, user):
     if user: return re.search('TODO\('+user+'\)', line)
