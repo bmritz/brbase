@@ -5,6 +5,7 @@ echo $HOME
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo "Naming machine $1"
 rm $HOME/.bashrc
+echo "export shopt -s checkwinsize" >> $HOME/.bashrc
 echo "export USR_HOME=$HOME" >> $HOME/.bashrc
 echo "export BASE_DIR=$DIR" >> $HOME/.bashrc
 echo "source \$BASE_DIR/config/bash/bashrc" >> $HOME/.bashrc
